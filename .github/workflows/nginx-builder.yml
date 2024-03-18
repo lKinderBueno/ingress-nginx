@@ -1,4 +1,4 @@
-name: cockroach-operator
+name: nginx-builder
 
 on:
   push:

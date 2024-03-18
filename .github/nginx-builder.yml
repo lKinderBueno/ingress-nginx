@@ -1,0 +1,50 @@
+name: cockroach-operator
+
+on:
+  push:
+    branches: [ "master" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Repo metadata
+        id: repo
+        uses: actions/github-script@v7
+        with:
+          script: |
+            return context.repo.repo
+      - name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=ghcr.io/lkinderbueno/nginx
+          VERSION=v0.0.5
+          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=branch::${BRANCH}
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: images/nginx-1.25/rootfs
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache
+          cache-to: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache,mode=max

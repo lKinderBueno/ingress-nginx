@@ -50,8 +50,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          context: images/nginx-1.25/rootfs
-          file: ./Dockerfile
+          context: ./images/nginx-1.25/rootfs
+          file: rootfs/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
           platforms: linux/amd64,linux/arm64

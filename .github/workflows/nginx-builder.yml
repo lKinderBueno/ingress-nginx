@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./images/nginx-1.25/rootfs
-          file: ./images/nginx-1.25/Dockerfile
+          file: ./images/nginx-1.25/rootfs/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
           platforms: linux/amd64,linux/arm64

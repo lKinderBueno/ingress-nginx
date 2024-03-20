@@ -77,6 +77,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: |
             "BASE_IMAGE=${{env.BASE_IMAGE}}"
-            "VERSION=${{env.VERSION}}
+            "VERSION=${{env.VERSION}}"
           #cache-from: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache
           #cache-to: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache,mode=max

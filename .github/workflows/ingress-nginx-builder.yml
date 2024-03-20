@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BASE_IMAGE: ghcr.io/lkinderbueno/nginx:v0.0.5
+      VERSION: v1.10
     permissions:
       contents: read
       packages: write
@@ -60,7 +63,7 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           platforms: linux/amd64,linux/arm64
           build-args: |
-            "BASE_IMAGE=ghcr.io/lkinderbueno/nginx:v0.0.5"
-            "VERSION=${{ VERSION }}"
+            "BASE_IMAGE=${{env.BASE_IMAGE}}"
+            "VERSION=${{env.VERSION}}
           #cache-from: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache
           #cache-to: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache,mode=max

@@ -23,6 +23,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Repo metadata
+        id: repo
+        uses: actions/github-script@v7
+        with:
+          script: |
+            return context.repo.repo
       - name: Prepare
         id: prep
         run: |
@@ -48,14 +54,18 @@ jobs:
           go-version: "stable"
       - run: go version
       - uses: actions/checkout@v2
-      - name: Build amd64 version
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go && \
-             CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/dbg -buildvcs=false -v cmd/dbg/*.go && \
-             CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
-      - name: Build arm64 version
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go && \
-             CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/dbg -buildvcs=false -v cmd/dbg/*.go && \
-             CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
+      - name: Build amd64 version nginx
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go 
+      - name: Build amd64 version dbg
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/dbg -buildvcs=false -v cmd/dbg/*.go
+      - name: Build amd64 version wait-shutdown
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
+      - name: Build arm64 version nginx
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go 
+      - name: Build arm64 version dbg
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/dbg -buildvcs=false -v cmd/dbg/*.go
+      - name: Build arm64 version wait-shutdown
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5

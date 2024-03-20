@@ -24,12 +24,9 @@ jobs:
         id: prep
         run: |
           DOCKER_IMAGE=ghcr.io/lkinderbueno/ingress-nginx
-          VERSION=v0.10.0
+          VERSION=v1.10
           TAGS="${DOCKER_IMAGE}:${VERSION}"
           BASE_IMAGE=ghcr.io/lkinderbueno/nginx:v0.0.5
-          TARGETARCH=${{ TARGETARCH }}"
-          VERSION=${{ VERSION }}"
-          COMMIT_SHA=${{ COMMIT_SHA }}"
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=branch::${BRANCH}
           echo ::set-output name=tags::${TAGS}
@@ -64,9 +61,7 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           platforms: linux/amd64,linux/arm64
           build-args: |
-            "BASE_IMAGE=${BASE_IMAGE}"
-            "TARGETARCH=${{ TARGETARCH }}"
+            "BASE_IMAGE=${{BASE_IMAGE}}"
             "VERSION=${{ VERSION }}"
-            "COMMIT_SHA=${{ COMMIT_SHA }}"
           #cache-from: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache
           #cache-to: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache,mode=max

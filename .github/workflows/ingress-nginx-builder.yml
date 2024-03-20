@@ -78,5 +78,5 @@ jobs:
           build-args: |
             "BASE_IMAGE=${{env.BASE_IMAGE}}"
             "VERSION=${{env.VERSION}}"
-          #cache-from: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache
-          #cache-to: type=registry,ref=ghcr.io/lkinderbueno/nginx:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/lkinderbueno/ingress-nginx:buildcache
+          cache-to: type=registry,ref=ghcr.io/lkinderbueno/ingress-nginx:buildcache,mode=max

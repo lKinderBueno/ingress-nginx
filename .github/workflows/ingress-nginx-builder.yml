@@ -59,13 +59,13 @@ jobs:
       - name: Build amd64 version dbg
         run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/dbg -buildvcs=false -v cmd/dbg/*.go
       - name: Build amd64 version wait-shutdown
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/wait-shutdown -buildvcs=false -v cmd/waitshutdown/*.go
       - name: Build arm64 version nginx
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go 
       - name: Build arm64 version dbg
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/dbg -buildvcs=false -v cmd/dbg/*.go
       - name: Build arm64 version wait-shutdown
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/wait-shutdown -buildvcs=false -v cmd/waitshutdown/*.go
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5

@@ -48,11 +48,14 @@ jobs:
           go-version: "stable"
       - run: go version
       - uses: actions/checkout@v2
-      - name: Run script file
-        run: |
-           chmod +x ./build/build.sh
-           ./build/build.sh
-        shell: bash
+      - name: Build amd64 version
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go && \
+             CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/dbg -buildvcs=false -v cmd/dbg/*.go && \
+             CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rootfs/bin/amd64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
+      - name: Build arm64 version
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/nginx-ingress-controller -buildvcs=false -v cmd/nginx/*.go && \
+             CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/dbg -buildvcs=false -v cmd/dbg/*.go && \
+             CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o rootfs/bin/arm64/wait-shutdown -buildvcs=false -v cmd/wait-shutdown/*.go
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
